@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:NamelessHero/Assets/ArtStuff.meta
 folderAsset: yes
 guid: 0851605490a599b46b6ac5cb681d93ea
+========
+guid: 1b8d251f9af63b746bf2f7ffe00ebb9b
+>>>>>>>> ffb1ef98db6de484515304b5ae93ed36d14a4910:NamelessHero/Assets/TextMesh Pro/Documentation/TextMesh Pro User Guide 2016.pdf.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
