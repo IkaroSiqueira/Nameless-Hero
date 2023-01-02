@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     {
         if (_IsAlive)
         {
+            _DirectionOfMove = (_CurrentMove - _TargetMove).normalized;
             _CurrentMove = Vector2.SmoothDamp(_CurrentMove, _TargetMove, ref _SmoothMoveVelocity, _SmoothMoveSpeed);
             var move = new Vector3(_CurrentMove.x, _CurrentMove.y, 0);
             bool DashComplete = (Time.time > _NextDashEndTime);
@@ -48,10 +50,12 @@ public class Player : MonoBehaviour
     CharacterController _Controller;
     private Vector2 _TargetMove;
     private Vector2 _CurrentMove;
+    private Vector2 _DirectionOfMove;
     private Vector2 _SmoothMoveVelocity;
     private float _NextDashEndTime;
     private float _NextGraceEndTime;
     private bool _IsAlive;
+    private Weapon _CurrentWeapon;
 
     [SerializeField]
     [Tooltip("Number of hearts.")]
@@ -80,6 +84,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("Duration of dash in seconds.")]
     float _DashDuration = 0.3f;
+
+    [SerializeField]
+    [Tooltip("Array of weapons that the player can use randomly")]
+    Weapon[] _Weapons;
 
     #endregion
 
@@ -122,7 +130,14 @@ public class Player : MonoBehaviour
     #region Methods
     private void HitAt(InputAction.CallbackContext context, Vector2 _Target)
     {
-        Debug.Log("Hit at ");
+        if (_CurrentWeapon == null)
+        {
+            _CurrentWeapon = _Weapons[0];
+        }
+        _CurrentWeapon.Attack(_Target, _DirectionOfMove);
+        var rand = new System.Random();
+        _CurrentWeapon = _Weapons[rand.Next(_Weapons.Length)];
+        // TODO display current weapon...
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
